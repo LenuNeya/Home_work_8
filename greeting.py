@@ -6,7 +6,12 @@ TODAY = date.today()
 END_WEEK = TODAY + timedelta(days=7)
 
 
-def get_birthdays_per_week(employees):
+def display_reminder(birthdays_dict: defaultdict) -> None:
+    for day, persons in birthdays_dict.items():
+        print('{:<9}: {:<10}'.format(day, ', '.join(persons)))
+
+
+def get_birthdays_per_week(employees: list) -> None:
     
     grouped_birthdays = defaultdict(list)
     for employee in employees:
@@ -20,11 +25,10 @@ def get_birthdays_per_week(employees):
             else:
                 grouped_birthdays[next_birthday.strftime('%A')].append(employee['name'])
     
-    for day, persons in grouped_birthdays.items():
-        print('{:<9}: {:<10}'.format(day, ', '.join(persons)))
+    display_reminder(grouped_birthdays)
         
 
-def get_next_birthday(birthday, year):
+def get_next_birthday(birthday: date, year: int) -> date:
     
     try:
         next_birthday = birthday.replace(year=year)
@@ -35,6 +39,7 @@ def get_next_birthday(birthday, year):
         return get_next_birthday(next_birthday, year + 1, TODAY)
     else:
         return next_birthday
+
 
 
 if __name__ == '__main__':
